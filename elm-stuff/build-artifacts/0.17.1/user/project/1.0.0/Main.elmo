@@ -1,0 +1,83 @@
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('blended_grid')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(model))
+			]));
+};
+var _user$project$Main$sourceUrl = 'http://gsam.ga/projects/api/projects';
+var _user$project$Main$Model = function (a) {
+	return {projects: a};
+};
+var _user$project$Main$LoadSuccess = function (a) {
+	return {ctor: 'LoadSuccess', _0: a};
+};
+var _user$project$Main$LoadFailure = function (a) {
+	return {ctor: 'LoadFailure', _0: a};
+};
+var _user$project$Main$fetchProjects = function (msg) {
+	return A3(
+		_elm_lang$core$Task$perform,
+		_user$project$Main$LoadFailure,
+		msg,
+		A2(_evancz$elm_http$Http$get, _user$project$Project$decodeList, _user$project$Main$sourceUrl));
+};
+var _user$project$Main$init = A2(
+	_elm_lang$core$Platform_Cmd_ops['!'],
+	{
+		projects: _elm_lang$core$Native_List.fromArray(
+			[])
+	},
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess)
+		]));
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'LoadSuccess':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{projects: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'LoadFailure':
+				return _elm_lang$core$Native_Utils.crashCase(
+					'Main',
+					{
+						start: {line: 50, column: 5},
+						end: {line: 58, column: 50}
+					},
+					_p0)(
+					_elm_lang$core$Basics$toString(_p0._0));
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess)
+						]));
+		}
+	});
+var _user$project$Main$main = {
+	main: _elm_lang$html$Html_App$program(
+		{
+			init: _user$project$Main$init,
+			view: _user$project$Main$view,
+			update: _user$project$Main$update,
+			subscriptions: function (_p2) {
+				return _elm_lang$core$Platform_Sub$none;
+			}
+		})
+};
+var _user$project$Main$LoadProjects = {ctor: 'LoadProjects'};
