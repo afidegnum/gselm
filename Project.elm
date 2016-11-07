@@ -12,6 +12,7 @@ type alias Project =
     }
 
 
+
 decodeList : Json.Decode.Decoder (List Project)
 decodeList =
     Json.Decode.list decodeProject
