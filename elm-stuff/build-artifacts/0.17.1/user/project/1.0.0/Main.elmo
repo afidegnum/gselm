@@ -1,3 +1,32 @@
+var _user$project$Main$renderMenuItem = F2(
+	function (key, project) {
+		return A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(project.name)
+				]));
+	});
+var _user$project$Main$renderMenu = function (projects) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A3(
+			_elm_lang$core$Dict$foldl,
+			F3(
+				function (k, v, htmlList) {
+					return A2(
+						_elm_lang$core$List_ops['::'],
+						A2(_user$project$Main$renderMenuItem, k, v),
+						htmlList);
+				}),
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			projects));
+};
 var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8,10 +37,11 @@ var _user$project$Main$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_elm_lang$html$Html$text(
-				_elm_lang$core$Basics$toString(model))
+				_elm_lang$core$Basics$toString(
+					_user$project$Main$renderMenu(model.projects)))
 			]));
 };
-var _user$project$Main$sourceUrl = 'http://gsam.ga/projects/api/projects';
+var _user$project$Main$sourceUrl = 'http://gsam.ga:9191/projects/api/projects';
 var _user$project$Main$Model = function (a) {
 	return {projects: a};
 };
@@ -26,14 +56,11 @@ var _user$project$Main$fetchProjects = function (msg) {
 		_elm_lang$core$Task$perform,
 		_user$project$Main$LoadFailure,
 		msg,
-		A2(_evancz$elm_http$Http$get, _user$project$Project$decodeList, _user$project$Main$sourceUrl));
+		A2(_evancz$elm_http$Http$get, _user$project$Project$decodeDict, _user$project$Main$sourceUrl));
 };
 var _user$project$Main$init = A2(
 	_elm_lang$core$Platform_Cmd_ops['!'],
-	{
-		projects: _elm_lang$core$Native_List.fromArray(
-			[])
-	},
+	{projects: _elm_lang$core$Dict$empty},
 	_elm_lang$core$Native_List.fromArray(
 		[
 			_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess)
@@ -54,8 +81,8 @@ var _user$project$Main$update = F2(
 				return _elm_lang$core$Native_Utils.crashCase(
 					'Main',
 					{
-						start: {line: 50, column: 5},
-						end: {line: 58, column: 50}
+						start: {line: 51, column: 5},
+						end: {line: 59, column: 50}
 					},
 					_p0)(
 					_elm_lang$core$Basics$toString(_p0._0));

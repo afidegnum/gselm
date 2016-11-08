@@ -3,7 +3,7 @@ module Project exposing (..)
 import Json.Encode
 import Json.Decode exposing ((:=))
 import Json.Decode.Extra exposing ((|:))
-
+import Dict
 
 
 type alias Project =
@@ -12,10 +12,20 @@ type alias Project =
     }
 
 
+type alias ProjectDict =
+    Dict.Dict String Project
+
+
+decodeDict : Json.Decode.Decoder ProjectDict
+decodeDict =
+    decodeList
+        |> Json.Decode.map (List.map (\p -> ( p.key, p )))
+        |> Json.Decode.map Dict.fromList
+
 
 decodeList : Json.Decode.Decoder (List Project)
 decodeList =
-    Json.Decode.list decodeProject
+    "projects" := Json.Decode.list decodeProject
 
 
 decodeProject : Json.Decode.Decoder Project

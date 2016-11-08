@@ -6,6 +6,7 @@ import Html.App
 import Task exposing (..)
 import Http exposing (..)
 import Project exposing (Project)
+import Dict exposing (Dict)
 
 
 main : Program Never
@@ -20,29 +21,29 @@ main =
 
 sourceUrl : String
 sourceUrl =
-    "http://gsam.ga/projects/api/projects"
+    "http://gsam.ga:9191/projects/api/projects"
 
 
 type Msg
     = LoadProjects
     | LoadFailure Http.Error
-    | LoadSuccess (List Project)
+    | LoadSuccess (Dict String Project)
 
 
 type alias Model =
-    { projects : List Project
+    { projects : Dict String Project
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    { projects = [] } ! [ fetchProjects LoadSuccess ]
+    { projects = Dict.empty } ! [ fetchProjects LoadSuccess ]
 
 
-fetchProjects : (List Project -> Msg) -> Cmd Msg
+fetchProjects : (Dict String Project -> Msg) -> Cmd Msg
 fetchProjects msg =
     Task.perform LoadFailure msg <|
-        Http.get Project.decodeList sourceUrl
+        Http.get Project.decodeDict sourceUrl
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -58,6 +59,17 @@ update msg model =
             model ! [ fetchProjects LoadSuccess ]
 
 
+renderMenu : Dict String Project -> Html Msg
+renderMenu projects =
+    div [] <|
+        Dict.foldl (\k v htmlList -> renderMenuItem k v :: htmlList) [] projects
+
+
+renderMenuItem : String -> Project -> Html Msg
+renderMenuItem key project =
+    p [] [ text project.name ]
+
+
 view : Model -> Html Msg
 view model =
-    div [ class "blended_grid" ] [ text <| toString model ]
+    div [ class "blended_grid" ] [ text <| toString (renderMenu model.projects) ]
