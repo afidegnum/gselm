@@ -62,14 +62,14 @@ update msg model =
 renderMenu : Dict String Project -> Html Msg
 renderMenu projects =
     div [] <|
-        Dict.foldl (\k v htmlList -> renderMenuItem k v :: htmlList) [] projects
+        List.map renderMenuItem (Dict.values projects)
 
 
-renderMenuItem : String -> Project -> Html Msg
-renderMenuItem key project =
+renderMenuItem : Project -> Html Msg
+renderMenuItem project =
     p [] [ text project.name ]
 
 
 view : Model -> Html Msg
 view model =
-    div [ class "blended_grid" ] [ text <| toString (renderMenu model.projects) ]
+    div [ class "blended_grid" ] [ renderMenu model.projects ]
