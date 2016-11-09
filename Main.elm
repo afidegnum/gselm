@@ -19,20 +19,33 @@ main =
         }
 
 
-sourceUrl : { projurl : String , typurl : String, stagesurl: String }
-sourceUrl =
-  { projurl : "http://gsam.ga:9191/projects/api/projects"
-, typurl : "http://gsam.ga:9191/projects/api/types"
-, stagesurl : "http://gsam.ga:9191/projects/api/stages"
- }
+type ApiEndpoint
+    = ProjectsEndpoint
+    | TypesEndpoint
+    | StagesEndpoint
 
+
+endpointToUrl : ApiEndpoint -> String
+endpointToUrl endpoint =
+    let
+        baseUrl =
+            "http://gsam.ga:9191/projects/api/"
+    in
+        baseUrl
+            ++ case endpoint of
+                ProjectsEndpoint ->
+                    "projects"
+
+                TypesEndpoint ->
+                    "types"
+
+                StagesEndpoint ->
+                    "stages"
 
 
 
 --
 --
-
-
 
 
 type Msg
@@ -50,7 +63,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    { projects = Dict.empty } ! [ fetchProjects LoadSuccess ]
+    { projects = Dict.empty } ! [ fetchProjects LoadSuccess ], [ fetchProjects LoadSuccess ], [ fetchProjects LoadSuccess ]
 
 
 
@@ -61,19 +74,19 @@ init =
 fetchProjects : (Dict String Project -> Msg) -> Cmd Msg
 fetchProjects msg =
     Task.perform LoadFailure msg <|
-        Http.get Project.decodeDict sourceUrl
+        Http.get Project.decodeDict (endpointToUrl ProjectsEndpoint)
 
 
 fetchPtypes : (Dict String Project -> Msg) -> Cmd Msg
 fetchPtypes msg =
     Task.perform LoadFailure msg <|
-        Http.get Project.decodePtypeDict sourceUrl
+        Http.get Project.decodePtypeDict (endpointToUrl TypesEndpoint)
 
 
 fetchStages : (Dict String Project -> Msg) -> Cmd Msg
 fetchStages msg =
     Task.perform LoadFailure msg <|
-        Http.get Project.decodeStageDict sourceUrl
+        Http.get Project.decodeStageDict (endpointToUrl StagesEndpoint)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -89,10 +102,10 @@ update msg model =
             model ! [ fetchProjects LoadSuccess ]
 
         LoadStages ->
-            model ! [ fetchProjects LoadSuccess ]
+            model ! [ fetchStages LoadSuccess ]
 
         LoadPTypes ->
-            model ! [ fetchProjects LoadSuccess ]
+            model ! [ fetchPtypes LoadSuccess ]
 
 
 renderProjList : Dict String Project -> Html Msg
@@ -128,8 +141,10 @@ renderStageItem stages =
     p [] [ text stages.name ]
 
 
-view : Model -> List (Html Msg)
+view : Model -> Html Msg
 view model =
-  div [][
-    div [ class "blended_grid" ] [ renderProjList model.projects ]
-div [ class "blended_grid" ] [ renderProjList model.projects ]]
+    div []
+        [ div [ class "blended_grid" ] [ renderProjList model.projects ]
+        , div [ class "blended_grid" ] [ renderProjList model.projects ]
+        , div [ class "blended_grid" ] [ renderProjList model.projects ]
+        ]
