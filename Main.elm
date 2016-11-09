@@ -117,10 +117,8 @@ renderStageItem stages =
     p [] [ text stages.name ]
 
 
-view : Model -> Html Msg
+view : Model -> List (Html Msg)
 view model =
+  div [][
     div [ class "blended_grid" ] [ renderProjList model.projects ]
-
-
-
---     div [ class "blended_grid" ] [ renderProjList model.projects ]
+div [ class "blended_grid" ] [ renderProjList model.projects ]]
