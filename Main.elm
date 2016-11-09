@@ -43,17 +43,14 @@ endpointToUrl endpoint =
                     "stages"
 
 
-
---
---
-
-
 type Msg
     = LoadProjects
     | LoadStages
     | LoadPTypes
     | LoadFailure Http.Error
-    | LoadSuccess (Dict String Project)
+    | LoadPSuccess (Dict String Project)
+    | LoadTSuccess (Dict String Ptype)
+    | LoadSSuccess (Dict String Stage)
 
 
 type alias Model =
@@ -65,7 +62,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    { projects = Dict.empty } ! [ fetchProjects LoadSuccess, fetchProjects LoadSuccess, fetchProjects LoadSuccess ]
+    { projects = Dict.empty } ! [ fetchProjects LoadPSuccess, fetchPtypes LoadTSuccess, fetchStages LoadSSuccess ]
 
 
 
@@ -79,13 +76,13 @@ fetchProjects msg =
         Http.get Project.decodeDict (endpointToUrl ProjectsEndpoint)
 
 
-fetchPtypes : (Dict String Project -> Msg) -> Cmd Msg
+fetchPtypes : (Dict String Ptype -> Msg) -> Cmd Msg
 fetchPtypes msg =
     Task.perform LoadFailure msg <|
         Http.get Project.decodePtypeDict (endpointToUrl TypesEndpoint)
 
 
-fetchStages : (Dict String Project -> Msg) -> Cmd Msg
+fetchStages : (Dict String Stage -> Msg) -> Cmd Msg
 fetchStages msg =
     Task.perform LoadFailure msg <|
         Http.get Project.decodeStageDict (endpointToUrl StagesEndpoint)
@@ -94,20 +91,26 @@ fetchStages msg =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        LoadSuccess data ->
+        LoadPSuccess data ->
             ( { model | projects = data }, Cmd.none )
+
+        LoadTSuccess data ->
+            ( { model | ptypes = data }, Cmd.none )
+
+        LoadSSuccess data ->
+            ( { model | stages = data }, Cmd.none )
 
         LoadFailure httpError ->
             Debug.crash <| toString httpError
 
         LoadProjects ->
-            model ! [ fetchProjects LoadSuccess ]
+            model ! [ fetchProjects LoadPSuccess ]
 
         LoadStages ->
-            model ! [ fetchStages LoadSuccess ]
+            model ! [ fetchStages LoadTSuccess ]
 
         LoadPTypes ->
-            model ! [ fetchPtypes LoadSuccess ]
+            model ! [ fetchPtypes LoadSSuccess ]
 
 
 renderProjList : Dict String Project -> Html Msg
@@ -132,7 +135,7 @@ renderPtypeItem ptype =
     p [] [ text ptype.name ]
 
 
-renderStagesList : Dict String Project -> Html Msg
+renderStagesList : Dict String Stage -> Html Msg
 renderStagesList stages =
     div [] <|
         List.map renderStageItem (Dict.values stages)
