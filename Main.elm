@@ -19,12 +19,18 @@ main =
         }
 
 
-sourceUrl : String
+sourceUrl : { projurl : String , typurl : String, stagesurl: String }
 sourceUrl =
-    "http://gsam.ga:9191/projects/api/projects"
+  { projurl : "http://gsam.ga:9191/projects/api/projects"
+, typurl : "http://gsam.ga:9191/projects/api/types"
+, stagesurl : "http://gsam.ga:9191/projects/api/stages"
+ }
 
--- "http://gsam.ga:9191/projects/api/types"
--- "http://gsam.ga:9191/projects/api/stages"
+
+
+
+--
+--
 
 
 
