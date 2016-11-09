@@ -58,6 +58,8 @@ type Msg
 
 type alias Model =
     { projects : Dict String Project
+    , ptypes : Dict String Project
+    , stages : Dict String Project
     }
 
 
