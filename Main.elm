@@ -23,6 +23,11 @@ sourceUrl : String
 sourceUrl =
     "http://gsam.ga:9191/projects/api/projects"
 
+-- "http://gsam.ga:9191/projects/api/types"
+-- "http://gsam.ga:9191/projects/api/stages"
+
+
+
 
 type Msg
     = LoadProjects
