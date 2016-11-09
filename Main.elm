@@ -63,7 +63,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    { projects = Dict.empty } ! [ fetchProjects LoadSuccess ], [ fetchProjects LoadSuccess ], [ fetchProjects LoadSuccess ]
+    { projects = Dict.empty } ! [ fetchProjects LoadSuccess, fetchProjects LoadSuccess, fetchProjects LoadSuccess ]
 
 
 
@@ -145,6 +145,6 @@ view : Model -> Html Msg
 view model =
     div []
         [ div [ class "blended_grid" ] [ renderProjList model.projects ]
-        , div [ class "blended_grid" ] [ renderProjList model.projects ]
-        , div [ class "blended_grid" ] [ renderProjList model.projects ]
+        , div [ class "blended_grid" ] [ renderPtypeList model.ptypes ]
+        , div [ class "blended_grid" ] [ renderStagesList model.stages ]
         ]
