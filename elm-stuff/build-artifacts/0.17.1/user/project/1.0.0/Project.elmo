@@ -1,3 +1,35 @@
+var _user$project$Project$encodeStage = function (record) {
+	return _elm_lang$core$Json_Encode$object(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'key',
+				_1: _elm_lang$core$Json_Encode$string(record.key)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'name',
+				_1: _elm_lang$core$Json_Encode$string(record.name)
+			}
+			]));
+};
+var _user$project$Project$encodePtype = function (record) {
+	return _elm_lang$core$Json_Encode$object(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'key',
+				_1: _elm_lang$core$Json_Encode$string(record.key)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'name',
+				_1: _elm_lang$core$Json_Encode$string(record.name)
+			}
+			]));
+};
 var _user$project$Project$encodeProject = function (record) {
 	return _elm_lang$core$Json_Encode$object(
 		_elm_lang$core$Native_List.fromArray(
@@ -39,3 +71,53 @@ var _user$project$Project$decodeDict = A2(
 				return {ctor: '_Tuple2', _0: p.key, _1: p};
 			}),
 		_user$project$Project$decodeList));
+var _user$project$Project$decodeStageDict = A2(
+	_elm_lang$core$Json_Decode$map,
+	_elm_lang$core$Dict$fromList,
+	A2(
+		_elm_lang$core$Json_Decode$map,
+		_elm_lang$core$List$map(
+			function (p) {
+				return {ctor: '_Tuple2', _0: p.key, _1: p};
+			}),
+		_user$project$Project$decodeList));
+var _user$project$Project$decodePtypeList = A2(
+	_elm_lang$core$Json_Decode_ops[':='],
+	'projects',
+	_elm_lang$core$Json_Decode$list(_user$project$Project$decodeProject));
+var _user$project$Project$decodePtypeDict = A2(
+	_elm_lang$core$Json_Decode$map,
+	_elm_lang$core$Dict$fromList,
+	A2(
+		_elm_lang$core$Json_Decode$map,
+		_elm_lang$core$List$map(
+			function (p) {
+				return {ctor: '_Tuple2', _0: p.key, _1: p};
+			}),
+		_user$project$Project$decodePtypeList));
+var _user$project$Project$decodeStageList = A2(
+	_elm_lang$core$Json_Decode_ops[':='],
+	'projects',
+	_elm_lang$core$Json_Decode$list(_user$project$Project$decodeProject));
+var _user$project$Project$decodeStage = A2(
+	_elm_community$json_extra$Json_Decode_Extra_ops['|:'],
+	A2(
+		_elm_community$json_extra$Json_Decode_Extra_ops['|:'],
+		_elm_lang$core$Json_Decode$succeed(_user$project$Project$Project),
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'key', _elm_lang$core$Json_Decode$string)),
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string));
+var _user$project$Project$Ptype = F2(
+	function (a, b) {
+		return {key: a, name: b};
+	});
+var _user$project$Project$decodePtype = A2(
+	_elm_community$json_extra$Json_Decode_Extra_ops['|:'],
+	A2(
+		_elm_community$json_extra$Json_Decode_Extra_ops['|:'],
+		_elm_lang$core$Json_Decode$succeed(_user$project$Project$Ptype),
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'key', _elm_lang$core$Json_Decode$string)),
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string));
+var _user$project$Project$Stage = F2(
+	function (a, b) {
+		return {key: a, name: b};
+	});

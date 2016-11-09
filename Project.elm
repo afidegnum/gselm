@@ -12,6 +12,22 @@ type alias Project =
     }
 
 
+type alias Ptype =
+    { key : String
+    , name : String
+    }
+
+
+type alias Stage =
+    { key : String
+    , name : String
+    }
+
+
+
+-- Projects
+
+
 type alias ProjectDict =
     Dict.Dict String Project
 
@@ -37,6 +53,76 @@ decodeProject =
 
 encodeProject : Project -> Json.Encode.Value
 encodeProject record =
+    Json.Encode.object
+        [ ( "key", Json.Encode.string <| record.key )
+        , ( "name", Json.Encode.string <| record.name )
+        ]
+
+
+
+-- Project types
+
+
+type alias PtypeDict =
+    Dict.Dict String Ptype
+
+
+decodePtypeDict : Json.Decode.Decoder PtypeDict
+decodePtypeDict =
+    decodePtypeList
+        |> Json.Decode.map (List.map (\p -> ( p.key, p )))
+        |> Json.Decode.map Dict.fromList
+
+
+decodePtypeList : Json.Decode.Decoder (List Ptype)
+decodePtypeList =
+    "projects" := Json.Decode.list decodeProject
+
+
+decodePtype : Json.Decode.Decoder Ptype
+decodePtype =
+    Json.Decode.succeed Ptype
+        |: ("key" := Json.Decode.string)
+        |: ("name" := Json.Decode.string)
+
+
+encodePtype : Project -> Json.Encode.Value
+encodePtype record =
+    Json.Encode.object
+        [ ( "key", Json.Encode.string <| record.key )
+        , ( "name", Json.Encode.string <| record.name )
+        ]
+
+
+
+-- Stages
+
+
+type alias StageDict =
+    Dict.Dict String Project
+
+
+decodeStageDict : Json.Decode.Decoder StageDict
+decodeStageDict =
+    decodeList
+        |> Json.Decode.map (List.map (\p -> ( p.key, p )))
+        |> Json.Decode.map Dict.fromList
+
+
+decodeStageList : Json.Decode.Decoder (List Stage)
+decodeStageList =
+    "projects" := Json.Decode.list decodeProject
+
+
+decodeStage : Json.Decode.Decoder Stage
+decodeStage =
+    Json.Decode.succeed Project
+        |: ("key" := Json.Decode.string)
+        |: ("name" := Json.Decode.string)
+
+
+encodeStage : Project -> Json.Encode.Value
+encodeStage record =
     Json.Encode.object
         [ ( "key", Json.Encode.string <| record.key )
         , ( "name", Json.Encode.string <| record.name )

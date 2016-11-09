@@ -5,7 +5,7 @@ import Html.Attributes exposing (..)
 import Html.App
 import Task exposing (..)
 import Http exposing (..)
-import Project exposing (Project)
+import Project exposing (Project, Ptype, Stage)
 import Dict exposing (Dict)
 
 
@@ -26,6 +26,8 @@ sourceUrl =
 
 type Msg
     = LoadProjects
+    | LoadStages
+    | LoadPTypes
     | LoadFailure Http.Error
     | LoadSuccess (Dict String Project)
 
@@ -40,10 +42,27 @@ init =
     { projects = Dict.empty } ! [ fetchProjects LoadSuccess ]
 
 
+
+-- { ptypes = Dict.empty } ! [ fetchPtypes LoadSuccess ]
+--{ stages = Dict.empty } ! [ fetchStages LoadSuccess ]
+
+
 fetchProjects : (Dict String Project -> Msg) -> Cmd Msg
 fetchProjects msg =
     Task.perform LoadFailure msg <|
         Http.get Project.decodeDict sourceUrl
+
+
+fetchPtypes : (Dict String Project -> Msg) -> Cmd Msg
+fetchPtypes msg =
+    Task.perform LoadFailure msg <|
+        Http.get Project.decodePtypeDict sourceUrl
+
+
+fetchStages : (Dict String Project -> Msg) -> Cmd Msg
+fetchStages msg =
+    Task.perform LoadFailure msg <|
+        Http.get Project.decodeStageDict sourceUrl
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -58,18 +77,50 @@ update msg model =
         LoadProjects ->
             model ! [ fetchProjects LoadSuccess ]
 
+        LoadStages ->
+            model ! [ fetchProjects LoadSuccess ]
 
-renderMenu : Dict String Project -> Html Msg
-renderMenu projects =
+        LoadPTypes ->
+            model ! [ fetchProjects LoadSuccess ]
+
+
+renderProjList : Dict String Project -> Html Msg
+renderProjList projects =
     div [] <|
-        List.map renderMenuItem (Dict.values projects)
+        List.map renderProjItem (Dict.values projects)
 
 
-renderMenuItem : Project -> Html Msg
-renderMenuItem project =
+renderProjItem : Project -> Html Msg
+renderProjItem project =
     p [] [ text project.name ]
+
+
+renderPtypeList : Dict String Ptype -> Html Msg
+renderPtypeList ptypes =
+    div [] <|
+        List.map renderPtypeItem (Dict.values ptypes)
+
+
+renderPtypeItem : Ptype -> Html Msg
+renderPtypeItem ptype =
+    p [] [ text ptype.name ]
+
+
+renderStagesList : Dict String Project -> Html Msg
+renderStagesList stages =
+    div [] <|
+        List.map renderStageItem (Dict.values stages)
+
+
+renderStageItem : Project -> Html Msg
+renderStageItem stages =
+    p [] [ text stages.name ]
 
 
 view : Model -> Html Msg
 view model =
-    div [ class "blended_grid" ] [ renderMenu model.projects ]
+    div [ class "blended_grid" ] [ renderProjList model.projects ]
+
+
+
+--     div [ class "blended_grid" ] [ renderProjList model.projects ]

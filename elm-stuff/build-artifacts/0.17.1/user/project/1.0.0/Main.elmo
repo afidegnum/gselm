@@ -1,4 +1,44 @@
-var _user$project$Main$renderMenuItem = function (project) {
+var _user$project$Main$renderStageItem = function (stages) {
+	return A2(
+		_elm_lang$html$Html$p,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(stages.name)
+			]));
+};
+var _user$project$Main$renderStagesList = function (stages) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Main$renderStageItem,
+			_elm_lang$core$Dict$values(stages)));
+};
+var _user$project$Main$renderPtypeItem = function (ptype) {
+	return A2(
+		_elm_lang$html$Html$p,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(ptype.name)
+			]));
+};
+var _user$project$Main$renderPtypeList = function (ptypes) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Main$renderPtypeItem,
+			_elm_lang$core$Dict$values(ptypes)));
+};
+var _user$project$Main$renderProjItem = function (project) {
 	return A2(
 		_elm_lang$html$Html$p,
 		_elm_lang$core$Native_List.fromArray(
@@ -8,14 +48,14 @@ var _user$project$Main$renderMenuItem = function (project) {
 				_elm_lang$html$Html$text(project.name)
 			]));
 };
-var _user$project$Main$renderMenu = function (projects) {
+var _user$project$Main$renderProjList = function (projects) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$Main$renderMenuItem,
+			_user$project$Main$renderProjItem,
 			_elm_lang$core$Dict$values(projects)));
 };
 var _user$project$Main$view = function (model) {
@@ -27,7 +67,7 @@ var _user$project$Main$view = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$Main$renderMenu(model.projects)
+				_user$project$Main$renderProjList(model.projects)
 			]));
 };
 var _user$project$Main$sourceUrl = 'http://gsam.ga:9191/projects/api/projects';
@@ -70,11 +110,27 @@ var _user$project$Main$update = F2(
 				return _elm_lang$core$Native_Utils.crashCase(
 					'Main',
 					{
-						start: {line: 51, column: 5},
-						end: {line: 59, column: 50}
+						start: {line: 70, column: 5},
+						end: {line: 84, column: 50}
 					},
 					_p0)(
 					_elm_lang$core$Basics$toString(_p0._0));
+			case 'LoadProjects':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess)
+						]));
+			case 'LoadStages':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess)
+						]));
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -96,4 +152,20 @@ var _user$project$Main$main = {
 			}
 		})
 };
+var _user$project$Main$fetchPtypes = function (msg) {
+	return A3(
+		_elm_lang$core$Task$perform,
+		_user$project$Main$LoadFailure,
+		msg,
+		A2(_evancz$elm_http$Http$get, _user$project$Project$decodePtypeDict, _user$project$Main$sourceUrl));
+};
+var _user$project$Main$fetchStages = function (msg) {
+	return A3(
+		_elm_lang$core$Task$perform,
+		_user$project$Main$LoadFailure,
+		msg,
+		A2(_evancz$elm_http$Http$get, _user$project$Project$decodeStageDict, _user$project$Main$sourceUrl));
+};
+var _user$project$Main$LoadPTypes = {ctor: 'LoadPTypes'};
+var _user$project$Main$LoadStages = {ctor: 'LoadStages'};
 var _user$project$Main$LoadProjects = {ctor: 'LoadProjects'};
