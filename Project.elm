@@ -76,7 +76,7 @@ decodePtypeDict =
 
 decodePtypeList : Json.Decode.Decoder (List Ptype)
 decodePtypeList =
-    "projects" := Json.Decode.list decodeProject
+    "types" := Json.Decode.list decodeProject
 
 
 decodePtype : Json.Decode.Decoder Ptype
@@ -111,7 +111,7 @@ decodeStageDict =
 
 decodeStageList : Json.Decode.Decoder (List Stage)
 decodeStageList =
-    "projects" := Json.Decode.list decodeProject
+    "stages" := Json.Decode.list decodeProject
 
 
 decodeStage : Json.Decode.Decoder Stage

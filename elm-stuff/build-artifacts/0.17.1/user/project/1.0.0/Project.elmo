@@ -83,7 +83,7 @@ var _user$project$Project$decodeStageDict = A2(
 		_user$project$Project$decodeList));
 var _user$project$Project$decodePtypeList = A2(
 	_elm_lang$core$Json_Decode_ops[':='],
-	'projects',
+	'types',
 	_elm_lang$core$Json_Decode$list(_user$project$Project$decodeProject));
 var _user$project$Project$decodePtypeDict = A2(
 	_elm_lang$core$Json_Decode$map,
@@ -97,7 +97,7 @@ var _user$project$Project$decodePtypeDict = A2(
 		_user$project$Project$decodePtypeList));
 var _user$project$Project$decodeStageList = A2(
 	_elm_lang$core$Json_Decode_ops[':='],
-	'projects',
+	'stages',
 	_elm_lang$core$Json_Decode$list(_user$project$Project$decodeProject));
 var _user$project$Project$decodeStage = A2(
 	_elm_community$json_extra$Json_Decode_Extra_ops['|:'],
