@@ -55,8 +55,8 @@ type Msg
 
 type alias Model =
     { projects : Dict String Project
-    , ptypes : Dict String Project
-    , stages : Dict String Project
+    , ptypes : Dict String Ptype
+    , stages : Dict String Stage
     }
 
 
@@ -141,7 +141,7 @@ renderStagesList stages =
         List.map renderStageItem (Dict.values stages)
 
 
-renderStageItem : Project -> Html Msg
+renderStageItem : Stage -> Html Msg
 renderStageItem stages =
     p [] [ text stages.name ]
 

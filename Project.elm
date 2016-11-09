@@ -76,7 +76,7 @@ decodePtypeDict =
 
 decodePtypeList : Json.Decode.Decoder (List Ptype)
 decodePtypeList =
-    "types" := Json.Decode.list decodeProject
+    "types" := Json.Decode.list decodePtype
 
 
 decodePtype : Json.Decode.Decoder Ptype
@@ -99,7 +99,7 @@ encodePtype record =
 
 
 type alias StageDict =
-    Dict.Dict String Project
+    Dict.Dict String Stage
 
 
 decodeStageDict : Json.Decode.Decoder StageDict
@@ -111,12 +111,12 @@ decodeStageDict =
 
 decodeStageList : Json.Decode.Decoder (List Stage)
 decodeStageList =
-    "stages" := Json.Decode.list decodeProject
+    "stages" := Json.Decode.list decodeStage
 
 
 decodeStage : Json.Decode.Decoder Stage
 decodeStage =
-    Json.Decode.succeed Project
+    Json.Decode.succeed Stage
         |: ("key" := Json.Decode.string)
         |: ("name" := Json.Decode.string)
 
