@@ -62,7 +62,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    { projects = Dict.empty } ! [ fetchProjects LoadPSuccess, fetchPtypes LoadTSuccess, fetchStages LoadSSuccess ]
+    { projects = Dict.empty, ptypes = Dict.empty, stages = Dict.empty } ! [ fetchProjects LoadPSuccess, fetchPtypes LoadTSuccess, fetchStages LoadSSuccess ]
 
 
 

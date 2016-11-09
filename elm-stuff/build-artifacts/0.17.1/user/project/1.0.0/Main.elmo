@@ -83,7 +83,7 @@ var _user$project$Main$view = function (model) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$Main$renderProjList(model.projects)
+						_user$project$Main$renderPtypeList(model.ptypes)
 					])),
 				A2(
 				_elm_lang$html$Html$div,
@@ -93,7 +93,7 @@ var _user$project$Main$view = function (model) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$Main$renderProjList(model.projects)
+						_user$project$Main$renderStagesList(model.stages)
 					]))
 			]));
 };
@@ -114,14 +114,21 @@ var _user$project$Main$endpointToUrl = function (endpoint) {
 			}
 		}());
 };
-var _user$project$Main$Model = function (a) {
-	return {projects: a};
-};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {projects: a, ptypes: b, stages: c};
+	});
 var _user$project$Main$StagesEndpoint = {ctor: 'StagesEndpoint'};
 var _user$project$Main$TypesEndpoint = {ctor: 'TypesEndpoint'};
 var _user$project$Main$ProjectsEndpoint = {ctor: 'ProjectsEndpoint'};
-var _user$project$Main$LoadSuccess = function (a) {
-	return {ctor: 'LoadSuccess', _0: a};
+var _user$project$Main$LoadSSuccess = function (a) {
+	return {ctor: 'LoadSSuccess', _0: a};
+};
+var _user$project$Main$LoadTSuccess = function (a) {
+	return {ctor: 'LoadTSuccess', _0: a};
+};
+var _user$project$Main$LoadPSuccess = function (a) {
+	return {ctor: 'LoadPSuccess', _0: a};
 };
 var _user$project$Main$LoadFailure = function (a) {
 	return {ctor: 'LoadFailure', _0: a};
@@ -136,15 +143,6 @@ var _user$project$Main$fetchProjects = function (msg) {
 			_user$project$Project$decodeDict,
 			_user$project$Main$endpointToUrl(_user$project$Main$ProjectsEndpoint)));
 };
-var _user$project$Main$init = A2(
-	_elm_lang$core$Platform_Cmd_ops['!'],
-	{projects: _elm_lang$core$Dict$empty},
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess),
-			_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess),
-			_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess)
-		]));
 var _user$project$Main$fetchPtypes = function (msg) {
 	return A3(
 		_elm_lang$core$Task$perform,
@@ -165,11 +163,20 @@ var _user$project$Main$fetchStages = function (msg) {
 			_user$project$Project$decodeStageDict,
 			_user$project$Main$endpointToUrl(_user$project$Main$StagesEndpoint)));
 };
+var _user$project$Main$init = A2(
+	_elm_lang$core$Platform_Cmd_ops['!'],
+	{projects: _elm_lang$core$Dict$empty, ptypes: _elm_lang$core$Dict$empty, stages: _elm_lang$core$Dict$empty},
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$Main$fetchProjects(_user$project$Main$LoadPSuccess),
+			_user$project$Main$fetchPtypes(_user$project$Main$LoadTSuccess),
+			_user$project$Main$fetchStages(_user$project$Main$LoadSSuccess)
+		]));
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p1 = msg;
 		switch (_p1.ctor) {
-			case 'LoadSuccess':
+			case 'LoadPSuccess':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -177,12 +184,28 @@ var _user$project$Main$update = F2(
 						{projects: _p1._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
+			case 'LoadTSuccess':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{ptypes: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'LoadSSuccess':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{stages: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			case 'LoadFailure':
 				return _elm_lang$core$Native_Utils.crashCase(
 					'Main',
 					{
-						start: {line: 94, column: 5},
-						end: {line: 108, column: 48}
+						start: {line: 93, column: 5},
+						end: {line: 113, column: 49}
 					},
 					_p1)(
 					_elm_lang$core$Basics$toString(_p1._0));
@@ -192,7 +215,7 @@ var _user$project$Main$update = F2(
 					model,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_user$project$Main$fetchProjects(_user$project$Main$LoadSuccess)
+							_user$project$Main$fetchProjects(_user$project$Main$LoadPSuccess)
 						]));
 			case 'LoadStages':
 				return A2(
@@ -200,7 +223,7 @@ var _user$project$Main$update = F2(
 					model,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_user$project$Main$fetchStages(_user$project$Main$LoadSuccess)
+							_user$project$Main$fetchStages(_user$project$Main$LoadTSuccess)
 						]));
 			default:
 				return A2(
@@ -208,7 +231,7 @@ var _user$project$Main$update = F2(
 					model,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_user$project$Main$fetchPtypes(_user$project$Main$LoadSuccess)
+							_user$project$Main$fetchPtypes(_user$project$Main$LoadSSuccess)
 						]));
 		}
 	});
