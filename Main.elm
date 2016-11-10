@@ -121,12 +121,11 @@ renderProjList projects =
         List.map renderProjItem (Dict.values projects)
 
 
-renderProjItem : Project -> Html Msg
+renderProjItem : Dict String Ptype
 renderProjItem project =
     div []
         [ text project.name
-        , fieldset []
-            [ radio (SwitchTo ptype.key) text ptype.name ]
+        , (renderPtypeList project.ptypes)
         ]
 
 
@@ -144,9 +143,9 @@ renderPtypeList ptypes =
         List.map renderPtypeItem (Dict.values ptypes)
 
 
-renderPtypeItem : Ptype -> Html Msg
+renderPtypeItem : Ptype -> String -> Html Msg
 renderPtypeItem ptype =
-    radio [] [ text ptype.name ]
+    radio (text ptype.name)
 
 
 renderStagesList : Dict String Stage -> Html Msg
