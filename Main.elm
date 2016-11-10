@@ -129,10 +129,16 @@ renderProjItem project =
         ]
 
 
-radio : msg -> String -> Html msg
-radio msg name =
+type alias TypeKey =
+    { key : String
+    , name : String
+    }
+
+
+radio : msg -> String -> String -> Html msg
+radio msg name key =
     label []
-        [ input [ type' "radio", onClick msg ] []
+        [ input [ type' "radio", onClick msg, id key ] []
         , text name
         ]
 
@@ -143,9 +149,9 @@ renderPtypeList ptypes =
         List.map renderPtypeItem (Dict.values ptypes)
 
 
-renderPtypeItem : Ptype -> String -> Html Msg
+renderPtypeItem : Ptype -> (String -> Html Msg)
 renderPtypeItem ptype =
-    radio (text ptype.name)
+    radio ( text ptype.name, ptype.key )
 
 
 renderStagesList : Dict String Stage -> Html Msg
