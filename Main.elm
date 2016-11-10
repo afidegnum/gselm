@@ -140,13 +140,13 @@ radio msg name =
 
 renderPtypeList : Dict String Ptype -> Html Msg
 renderPtypeList ptypes =
-    div [ buildStyle [ mainRow ] ] <|
+    fieldset [ buildStyle [ mainRow ] ] <|
         List.map renderPtypeItem (Dict.values ptypes)
 
 
 renderPtypeItem : Ptype -> Html Msg
 renderPtypeItem ptype =
-    p [] [ text ptype.name ]
+    radio [] [ text ptype.name ]
 
 
 renderStagesList : Dict String Stage -> Html Msg
