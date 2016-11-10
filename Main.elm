@@ -115,17 +115,17 @@ update msg model =
             model ! [ fetchPtypes LoadSSuccess ]
 
 
-renderProjList : Dict String Project -> Html Msg
-renderProjList projects =
+renderProjList : Project -> Html Msg
+renderProjList projects ptypes =
     div [ buildStyle [ mainRow ] ] <|
-        List.map renderProjItem (Dict.values projects)
+        List.map (renderProjItem projects ptypes)
 
 
-renderProjItem : Dict String Ptype
-renderProjItem project =
+renderProjItem : Project -> Dict String Ptype -> Html Msg
+renderProjItem project ptypes =
     div []
         [ text project.name
-        , (renderPtypeList project.ptypes)
+        , (renderPtypeList ptypes)
         ]
 
 
@@ -149,9 +149,9 @@ renderPtypeList ptypes =
         List.map renderPtypeItem (Dict.values ptypes)
 
 
-renderPtypeItem : Ptype -> (String -> Html Msg)
+renderPtypeItem : Ptype -> Html Msg
 renderPtypeItem ptype =
-    radio ( text ptype.name, ptype.key )
+    radio SwitchTo ptype.name ptype.key
 
 
 renderStagesList : Dict String Stage -> Html Msg
