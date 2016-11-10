@@ -115,10 +115,10 @@ update msg model =
             model ! [ fetchPtypes LoadSSuccess ]
 
 
-renderProjList : Project -> Html Msg
+renderProjList : Project -> Dict String Ptype -> Html Msg
 renderProjList projects ptypes =
     div [ buildStyle [ mainRow ] ] <|
-        List.map (renderProjItem projects ptypes)
+        [ (renderProjItem projects ptypes) ]
 
 
 renderProjItem : Project -> Dict String Ptype -> Html Msg
@@ -184,9 +184,9 @@ mainRow =
 
 
 view : Model -> Html Msg
-view model =
+view render model =
     div [ buildStyle [ mainBlock ] ]
-        [ div [ buildStyle [ mainRow ] ] [ renderProjList model.projects ]
+        [ div [ buildStyle [ mainRow ] ] [ (renderProjList model.projects model.ptypes) ]
         , div [ buildStyle [ mainRow ] ] [ renderPtypeList model.ptypes ]
         , div [ buildStyle [ mainRow ] ] [ renderStagesList model.stages ]
         ]
