@@ -6,6 +6,7 @@ import Html.App
 import Task exposing (..)
 import Http exposing (..)
 import Project exposing (Project, Ptype, Stage)
+import Html.Events exposing (onClick)
 import Dict exposing (Dict)
 
 
@@ -46,6 +47,7 @@ endpointToUrl endpoint =
 type Msg
     = LoadProjects
     | LoadStages
+    | SwitchTo
     | LoadPTypes
     | LoadFailure Http.Error
     | LoadPSuccess (Dict String Project)
@@ -115,18 +117,30 @@ update msg model =
 
 renderProjList : Dict String Project -> Html Msg
 renderProjList projects =
-    div [] <|
+    div [ buildStyle [ mainRow ] ] <|
         List.map renderProjItem (Dict.values projects)
 
 
 renderProjItem : Project -> Html Msg
 renderProjItem project =
-    p [] [ text project.name ]
+    div []
+        [ text project.name
+        , fieldset []
+            [ radio (SwitchTo ptype.key) text ptype.name ]
+        ]
+
+
+radio : msg -> String -> Html msg
+radio msg name =
+    label []
+        [ input [ type' "radio", onClick msg ] []
+        , text name
+        ]
 
 
 renderPtypeList : Dict String Ptype -> Html Msg
 renderPtypeList ptypes =
-    div [] <|
+    div [ buildStyle [ mainRow ] ] <|
         List.map renderPtypeItem (Dict.values ptypes)
 
 
@@ -142,14 +156,44 @@ renderStagesList stages =
 
 
 renderStageItem : Stage -> Html Msg
-renderStageItem stages =
-    p [] [ text stages.name ]
+renderStageItem stage =
+    p [] [ text stage.name ]
+
+
+buildStyle : List (List ( String, String )) -> Attribute Msg
+buildStyle styleLists =
+    Html.Attributes.style <| List.concat styleLists
+
+
+mainBlock : List ( String, String )
+mainBlock =
+    [ ( "width", "100%" )
+    , ( "text-aligh", "center" )
+    , ( "color", "#474F7C" )
+    ]
+
+
+mainRow : List ( String, String )
+mainRow =
+    [ ( "display", "inline-block" ) ]
 
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ div [ class "blended_grid" ] [ renderProjList model.projects ]
-        , div [ class "blended_grid" ] [ renderPtypeList model.ptypes ]
-        , div [ class "blended_grid" ] [ renderStagesList model.stages ]
+    div [ buildStyle [ mainBlock ] ]
+        [ div [ buildStyle [ mainRow ] ] [ renderProjList model.projects ]
+        , div [ buildStyle [ mainRow ] ] [ renderPtypeList model.ptypes ]
+        , div [ buildStyle [ mainRow ] ] [ renderStagesList model.stages ]
         ]
+
+
+
+-- let
+--    children =
+--        List.map (\elem -> div [class "blended_grid"] [ elem ])
+--            [ renderProjList model.projects
+--            , renderPtypeList model.ptypes
+--            , renderStagesList model.stages
+--            ]
+-- in
+--   div [] children

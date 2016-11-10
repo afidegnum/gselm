@@ -71,16 +71,6 @@ var _user$project$Project$decodeDict = A2(
 				return {ctor: '_Tuple2', _0: p.key, _1: p};
 			}),
 		_user$project$Project$decodeList));
-var _user$project$Project$decodeStageDict = A2(
-	_elm_lang$core$Json_Decode$map,
-	_elm_lang$core$Dict$fromList,
-	A2(
-		_elm_lang$core$Json_Decode$map,
-		_elm_lang$core$List$map(
-			function (p) {
-				return {ctor: '_Tuple2', _0: p.key, _1: p};
-			}),
-		_user$project$Project$decodeList));
 var _user$project$Project$Ptype = F2(
 	function (a, b) {
 		return {key: a, name: b};
@@ -121,3 +111,13 @@ var _user$project$Project$decodeStageList = A2(
 	_elm_lang$core$Json_Decode_ops[':='],
 	'stages',
 	_elm_lang$core$Json_Decode$list(_user$project$Project$decodeStage));
+var _user$project$Project$decodeStageDict = A2(
+	_elm_lang$core$Json_Decode$map,
+	_elm_lang$core$Dict$fromList,
+	A2(
+		_elm_lang$core$Json_Decode$map,
+		_elm_lang$core$List$map(
+			function (p) {
+				return {ctor: '_Tuple2', _0: p.key, _1: p};
+			}),
+		_user$project$Project$decodeStageList));

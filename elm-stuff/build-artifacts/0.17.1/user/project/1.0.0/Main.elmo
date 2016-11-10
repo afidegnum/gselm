@@ -1,11 +1,25 @@
-var _user$project$Main$renderStageItem = function (stages) {
+var _user$project$Main$mainRow = _elm_lang$core$Native_List.fromArray(
+	[
+		{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'}
+	]);
+var _user$project$Main$mainBlock = _elm_lang$core$Native_List.fromArray(
+	[
+		{ctor: '_Tuple2', _0: 'width', _1: '100%'},
+		{ctor: '_Tuple2', _0: 'text-aligh', _1: 'center'},
+		{ctor: '_Tuple2', _0: 'color', _1: '#474F7C'}
+	]);
+var _user$project$Main$buildStyle = function (styleLists) {
+	return _elm_lang$html$Html_Attributes$style(
+		_elm_lang$core$List$concat(styleLists));
+};
+var _user$project$Main$renderStageItem = function (stage) {
 	return A2(
 		_elm_lang$html$Html$p,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text(stages.name)
+				_elm_lang$html$Html$text(stage.name)
 			]));
 };
 var _user$project$Main$renderStagesList = function (stages) {
@@ -32,7 +46,11 @@ var _user$project$Main$renderPtypeList = function (ptypes) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_user$project$Main$buildStyle(
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Main$mainRow]))
+			]),
 		A2(
 			_elm_lang$core$List$map,
 			_user$project$Main$renderPtypeItem,
@@ -52,7 +70,11 @@ var _user$project$Main$renderProjList = function (projects) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_user$project$Main$buildStyle(
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Main$mainRow]))
+			]),
 		A2(
 			_elm_lang$core$List$map,
 			_user$project$Main$renderProjItem,
@@ -62,14 +84,20 @@ var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_user$project$Main$buildStyle(
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Main$mainBlock]))
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('blended_grid')
+						_user$project$Main$buildStyle(
+						_elm_lang$core$Native_List.fromArray(
+							[_user$project$Main$mainRow]))
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -79,7 +107,9 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('blended_grid')
+						_user$project$Main$buildStyle(
+						_elm_lang$core$Native_List.fromArray(
+							[_user$project$Main$mainRow]))
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -89,7 +119,9 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('blended_grid')
+						_user$project$Main$buildStyle(
+						_elm_lang$core$Native_List.fromArray(
+							[_user$project$Main$mainRow]))
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[

@@ -86,7 +86,7 @@ decodePtype =
         |: ("name" := Json.Decode.string)
 
 
-encodePtype : Project -> Json.Encode.Value
+encodePtype : Ptype -> Json.Encode.Value
 encodePtype record =
     Json.Encode.object
         [ ( "key", Json.Encode.string <| record.key )
@@ -104,7 +104,7 @@ type alias StageDict =
 
 decodeStageDict : Json.Decode.Decoder StageDict
 decodeStageDict =
-    decodeList
+    decodeStageList
         |> Json.Decode.map (List.map (\p -> ( p.key, p )))
         |> Json.Decode.map Dict.fromList
 
@@ -121,7 +121,7 @@ decodeStage =
         |: ("name" := Json.Decode.string)
 
 
-encodeStage : Project -> Json.Encode.Value
+encodeStage : Stage -> Json.Encode.Value
 encodeStage record =
     Json.Encode.object
         [ ( "key", Json.Encode.string <| record.key )
